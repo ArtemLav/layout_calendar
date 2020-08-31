@@ -1,3 +1,57 @@
-body {
-  margin: 0;
+@import "general";
+
+$size: 100px;
+$days: (
+  "mon": 0,
+  "tue": 1,
+  "wed": 2,
+  "thu": 3,
+  "fri": 4,
+  "sat": 5,
+  "sun": 6
+);
+$gap: 1px;
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  width: ($size + $gap) * 7;
+
+  > div {
+    background-color: #eee;
+    border: 1px solid #000;
+    width: $size;
+    height: $size;
+    text-align: center;
+    line-height: $size;
+    margin-right: $gap;
+    margin-bottom: $gap;
+
+    &:hover {
+      background-color: pink;
+      cursor: pointer;
+      transform: translateY(-20px);
+      transition: 0.5s ease-in-out;
+    }
+  }
+}
+
+@for $i from 1 through 31 {
+  .calendar > &:nth-child(#{$i}) {
+    &:after {
+      content: "#{$i}";
+    }
+  }
+}
+
+@each $day, $order in $days {
+  .calendar-#{$day} > &:first-child {
+    margin-left: $order * ($size + $gap);
+  }
+}
+
+@for $i from 28 through 31 {
+  .calendar-#{$i} > &:nth-child(n + #{$i + 1}) {
+    display: none;
+  }
 }
